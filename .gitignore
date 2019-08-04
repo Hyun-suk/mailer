@@ -34,3 +34,6 @@ develop-eggs/*.so
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# db
+*.sqlite3
