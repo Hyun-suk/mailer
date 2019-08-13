@@ -1,4 +1,5 @@
 from django.db import models
+import uuid
 
 
 class Marketing(models.Model):
@@ -23,8 +24,8 @@ class Customer(models.Model):
 
 
 class Promotion(models.Model):
+    uuid = models.UUIDField(primary_key=True, default=uuid.uuid4)
     marketing = models.ForeignKey(Marketing, related_name='promotions', on_delete=models.CASCADE)
     customer = models.ForeignKey(Customer, related_name='promotions', on_delete=models.CASCADE)
-    url_key = models.CharField(max_length=32, blank=False, unique=True)
     is_read = models.BooleanField(default=False)
     sent_at = models.DateTimeField(blank=False)
