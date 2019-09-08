@@ -8,9 +8,11 @@ from dotenv import load_dotenv, find_dotenv
 
 class Mail:
 
-    def __init__(self, MAIL_ID, MAIL_PWD):
-        self.MAIL_ID = MAIL_ID
-        self.MAIL_PWD = MAIL_PWD
+    def __init__(self):
+        load_dotenv(find_dotenv())
+
+        self.MAIL_ID = os.getenv('MAIL_ID')
+        self.MAIL_PWD = os.getenv('MAIL_PWD')
 
     def send_mail(self, service, sender, receiver, title, content):
         service_smtp = {
@@ -30,11 +32,8 @@ class Mail:
 
 
 if __name__=='__main__':
-    load_dotenv(find_dotenv())
-    MAIL_ID = os.getenv('MAIL_ID')
-    MAIL_PWD = os.getenv('MAIL_PWD')
 
-    mail = Mail(MAIL_ID, MAIL_PWD)
+    mail = Mail()
     me = 'better.imhs@gmail.com'
     you = 'better.imhs@gmail.com'
 
