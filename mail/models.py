@@ -1,10 +1,11 @@
 from django.db import models
+from ckeditor_uploader.fields import RichTextUploadingField
 import uuid
 
 
 class Marketing(models.Model):
     name = models.CharField(max_length=100, unique=True)
-    message = models.CharField(max_length=5000)
+    content = RichTextUploadingField(blank=True,null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

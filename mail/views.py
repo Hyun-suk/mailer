@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import Promotion
 from .services import Mail
+from .forms import MarketingForm
 import os
 
 
@@ -10,17 +11,21 @@ def index(request):
 
 def send_mail(request):
     if request.method == 'POST':
-        title = request.POST['title']
         from_mail = request.POST['from']
         to_email = request.POST['to']
-        messages = request.POST['messages']
 
-        mail = Mail()
-        print(mail.send_mail('google', from_mail, to_email, title, messages))
+        form = MarketingForm(request.POST)
+        if form.is_valid():
+            marketing = form.save(commit=False)
+            marketing.save()
 
-        return redirect('mail:index')
+            mail = Mail()
+            mail.send_mail('google', from_mail, to_email, marketing.name, marketing.content)
+
+            return redirect('mail:index')
     else:
-        return render(request, 'send_mail.html', {})
+        form = MarketingForm
+        return render(request, 'send_mail.html', {'form': form})
 
 
 def check_open(request, promotion_uuid):
