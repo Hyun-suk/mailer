@@ -14,6 +14,9 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SCOPE = [
     'openid',
 ]
 
+SOCIAL_AUTH_NAVER_KEY = os.getenv('NAVER_KEY')
+SOCIAL_AUTH_NAVER_SECRET = os.getenv('NAVER_SECRET')
+
 SOCIAL_AUTH_GOOGLE_PLUS_AUTH_EXTRA_ARGUMENTS = {
     'access_type': 'offline'
 }
