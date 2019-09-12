@@ -22,7 +22,7 @@ class Mail:
         server = smtplib.SMTP_SSL(service_smtp[service], 465)
         server.login(self.MAIL_ID, self.MAIL_PWD)
 
-        msg = MIMEText(content)
+        msg = MIMEText(content, 'html')
         msg['Subject'] = title
         msg['From'] = sender
         msg['To'] = receiver
