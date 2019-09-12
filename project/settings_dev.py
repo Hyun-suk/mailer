@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'mail.apps.MailConfig',
     'ckeditor',
     'ckeditor_uploader',
+    'social_django',
 ]
 
 MIDDLEWARE = [

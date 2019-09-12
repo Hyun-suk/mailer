@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'mail.apps.MailConfig',
     'ckeditor',
     'ckeditor_uploader',
+    'social_django',
 ]
 
 MIDDLEWARE = [
@@ -102,6 +103,10 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+AUTHENTICATION_BACKENDS = [
+    'social_core.backends.google.GoogleOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+]
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
@@ -120,14 +125,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-from dotenv import load_dotenv
-load_dotenv()
-
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
 CKEDITOR_UPLOAD_PATH = "uploads/"
+
+from .settings_key import *
+
+LOGIN_REDIRECT_URL='/mail'
+LOGOUT_REDIRECT_URL = '/mail'
 
 if os.environ.get('DJANGO_DEVELOPMENT') is not None:
     from .settings_dev import *
