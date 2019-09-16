@@ -29,4 +29,5 @@ class Promotion(models.Model):
     marketing = models.ForeignKey(Marketing, related_name='promotions', on_delete=models.CASCADE)
     customer = models.ForeignKey(Customer, related_name='promotions', on_delete=models.CASCADE)
     is_read = models.BooleanField(default=False)
-    sent_at = models.DateTimeField(blank=False)
+    sent_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
