@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.views.generic import DetailView
+from django.views.generic.list import ListView
 from .models import Promotion, Customer
 from .services import Mail
 from .forms import MarketingForm
@@ -8,6 +10,15 @@ import os
 
 def index(request):
     return render(request, 'index.html', {})
+
+class CustomerListView(ListView):
+    model = Customer
+    paginate_by = 20
+    template_name = 'customers.html'
+
+class CustomerDetailView(DetailView):
+    model = Customer
+    template_name = 'customer_detail.html'
 
 def send_mail(request):
     if request.method == 'POST':
