@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import Promotion
+from .models import Promotion, Customer
 from .services import Mail
 from .forms import MarketingForm
 import os
@@ -21,6 +21,9 @@ def send_mail(request):
 
             mail = Mail()
             mail.send_mail('google', from_mail, to_email, marketing.name, marketing.content)
+
+            customer = Customer.objects.get(email=to_email)
+            Promotion.objects.create(marketing=marketing, customer=customer)
 
             return redirect('mail:index')
     else:
