@@ -4,7 +4,7 @@ from django.views.generic import DetailView
 from django.views.generic.list import ListView
 from .models import Promotion, Customer
 from .services import Mail
-from .forms import MarketingForm
+from .forms import MarketingForm, SettingsForm
 import os
 
 
@@ -41,6 +41,18 @@ def send_mail(request):
         form = MarketingForm
         return render(request, 'send_mail.html', {'form': form})
 
+def settings(request):
+    if request.method == 'POST':
+        form = SettingsForm(request.POST)
+        if form.is_valid():
+            settings = form.save(commit=False)
+            settings.user = request.user
+            settings.save()
+            return redirect('mail:settings')
+    else:
+        form = SettingsForm()
+
+    return render(request, 'settings.html', {'form': form})
 
 def check_open(request, promotion_uuid):
     promotion = Promotion.objects.filter(uuid=promotion_uuid)

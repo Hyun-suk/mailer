@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'social_django',
+    'widget_tweaks',
 ]
 
 MIDDLEWARE = [

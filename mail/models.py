@@ -1,5 +1,6 @@
 from django.db import models
 from ckeditor_uploader.fields import RichTextUploadingField
+from django.contrib.auth.models import User
 import uuid
 
 
@@ -34,3 +35,12 @@ class Promotion(models.Model):
 
     def __str__(self):
         return ( self.marketing, self.customer )
+
+
+class Settings(models.Model):
+    user = models.ForeignKey(User, related_name='settings', on_delete=models.CASCADE)
+    email = models.EmailField(blank=False)
+    smtp_key = models.CharField(max_length=100, blank=False)
+
+    def __str__(self):
+        return self.email
