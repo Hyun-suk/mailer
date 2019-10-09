@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.views.generic import DetailView
 from django.views.generic.list import ListView
-from .models import Promotion, Customer
+from .models import Promotion, Customer, Settings
 from .services import Mail
 from .forms import MarketingForm, SettingsForm
 import os
@@ -51,8 +51,9 @@ def settings(request):
             return redirect('mail:settings')
     else:
         form = SettingsForm()
+        settings = Settings.objects.filter(user=request.user)
 
-    return render(request, 'settings.html', {'form': form})
+    return render(request, 'settings.html', {'form': form, 'settings': settings})
 
 def check_open(request, promotion_uuid):
     promotion = Promotion.objects.filter(uuid=promotion_uuid)

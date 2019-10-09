@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load custom_tags %}
 
 {% block content %}
   <form method="post" novalidate>
@@ -6,4 +7,21 @@
     {% include 'includes/form.html' with form=form %}
     <button type="submit" class="btn btn-secondary">Save</button>
   </form>
+
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th>Email</th>
+        <th>SMTP key</th>
+      </tr>
+    </thead>
+    {% for setting in settings %}
+      <tbody>
+        <tr>
+          <td>{{setting.email}}</td>
+          <td>{{setting.smtp_key|hide}}</td>
+        </tr>
+      </tbody>
+    {% endfor %}
+  </table>
 {% endblock %}
