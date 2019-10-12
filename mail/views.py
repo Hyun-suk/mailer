@@ -55,6 +55,16 @@ def settings(request):
 
     return render(request, 'settings.html', {'form': form, 'settings': settings})
 
+def delete_setting(request, setting_id):
+    setting = Settings.objects.get(id=setting_id)
+    if setting.user == request.user:
+        setting.delete()
+        return redirect('mail:settings')
+    else:
+        return render(request, 'warning.html')
+
+    return render(request, 'settings.html', {'form': form, 'settings': settings})
+
 def check_open(request, promotion_uuid):
     promotion = Promotion.objects.filter(uuid=promotion_uuid)
     promotion.update(is_read=True)

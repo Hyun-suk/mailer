@@ -13,6 +13,7 @@
       <tr>
         <th>Email</th>
         <th>SMTP key</th>
+        <th>삭제</th>
       </tr>
     </thead>
     {% for setting in settings %}
@@ -20,6 +21,9 @@
         <tr>
           <td>{{setting.email}}</td>
           <td>{{setting.smtp_key|hide}}</td>
+          <td><a
+            href="{% url 'mail:delete_setting' setting.id %}"
+            onclick="return confirm('정말 삭제하시겠습니까?')">삭제</a></td>
         </tr>
       </tbody>
     {% endfor %}
