@@ -2,6 +2,8 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.views.generic import DetailView
 from django.views.generic.list import ListView
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from .models import Promotion, Customer, Settings
 from .services import Mail
 from .forms import MarketingForm, SettingsForm
@@ -11,15 +13,18 @@ import os
 def index(request):
     return render(request, 'index.html', {})
 
+@method_decorator(login_required, name='dispatch')
 class CustomerListView(ListView):
     model = Customer
     paginate_by = 20
     template_name = 'customers.html'
 
+@method_decorator(login_required, name='dispatch')
 class CustomerDetailView(DetailView):
     model = Customer
     template_name = 'customer_detail.html'
 
+@login_required
 def send_mail(request):
     if request.method == 'POST':
         from_mail = request.POST['from']
@@ -41,6 +46,7 @@ def send_mail(request):
         form = MarketingForm
         return render(request, 'send_mail.html', {'form': form})
 
+@login_required
 def settings(request):
     if request.method == 'POST':
         form = SettingsForm(request.POST)
@@ -55,6 +61,7 @@ def settings(request):
 
     return render(request, 'settings.html', {'form': form, 'settings': settings})
 
+@login_required
 def delete_setting(request, setting_id):
     setting = Settings.objects.get(id=setting_id)
     if setting.user == request.user:
@@ -65,6 +72,7 @@ def delete_setting(request, setting_id):
 
     return render(request, 'settings.html', {'form': form, 'settings': settings})
 
+@login_required
 def check_open(request, promotion_uuid):
     promotion = Promotion.objects.filter(uuid=promotion_uuid)
     promotion.update(is_read=True)
