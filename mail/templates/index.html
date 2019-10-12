@@ -2,13 +2,6 @@
 
 {% block content %}
 <div class="container-fluid">
-  {% if user.is_authenticated %}
-    <p>Logged as {{ user.username }}</p>
-    <a href="{% url 'logout' %}" class="btn btn-warning" >Logout</a>
-  {% else %}
-    <a href="{% url 'social:begin' 'google-oauth2' %}" class="btn btn-warning">Google 로그인</a>
-    <a href="{% url 'social:begin' 'naver' %}" class="btn btn-success">Naver 로그인</a>
-  {% endif %}
-  <a href="{% url 'mail:send' %}" class="btn btn-secondary">메일 보내기</a>
+  Main Page
 </div>
 {% endblock %}
