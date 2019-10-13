@@ -9,6 +9,7 @@ class MarketingForm(forms.ModelForm):
 
 class AddressForm(forms.ModelForm):
     from_mail = forms.ModelChoiceField(queryset=None)
+    to_mail = forms.ModelMultipleChoiceField(queryset=None)
 
     def __init__(self, user, *args, **kwargs):
         super(AddressForm, self).__init__(*args, **kwargs)
@@ -17,9 +18,12 @@ class AddressForm(forms.ModelForm):
         self.fields['from_mail'].queryset = user.settings
         self.fields['from_mail'].initial = user.settings.first()
 
+        self.fields['to_mail'].label = _("받는 주소")
+        self.fields['to_mail'].queryset = user.customers
+
     class Meta:
         model = Settings
-        fields = ['from_mail']
+        fields = ['from_mail', 'to_mail']
 
 class SettingsForm(forms.ModelForm):
     class Meta:

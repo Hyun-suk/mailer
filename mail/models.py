@@ -15,6 +15,7 @@ class Marketing(models.Model):
 
 
 class Customer(models.Model):
+    user = models.ForeignKey(User, related_name='customers', on_delete=models.CASCADE)
     name = models.CharField(max_length=255, blank=False)
     email = models.EmailField(blank=False, unique=True)
     phone_number = models.CharField(max_length=15, blank=True)
@@ -22,7 +23,7 @@ class Customer(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.name
+        return '{0} ({1})'.format(self.name, self.email)
 
 
 class Promotion(models.Model):
@@ -34,7 +35,7 @@ class Promotion(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return ( self.marketing, self.customer )
+        return '{0} {1}'.format(self.marketing, self.customer)
 
 
 class Settings(models.Model):

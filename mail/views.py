@@ -27,8 +27,6 @@ class CustomerDetailView(DetailView):
 @login_required
 def send_mail(request):
     if request.method == 'POST':
-        to_email = request.POST['to']
-
         marketing_form = MarketingForm(request.POST)
         address_form = AddressForm(request.user, request.POST)
 
@@ -36,13 +34,14 @@ def send_mail(request):
             marketing = marketing_form.save(commit=False)
             marketing.save()
 
-            from_mail = address_form.cleaned_data.get('from_mail')
+            sender = address_form.cleaned_data.get('from_mail')
+            receivers = address_form.cleaned_data.get('to_mail')
 
             mail = Mail()
-            mail.send_mail('google', from_mail, to_email, marketing.name, marketing.content)
 
-            customer = Customer.objects.get(email=to_email)
-            Promotion.objects.create(marketing=marketing, customer=customer)
+            for receiver in receivers:
+                mail.send_mail('google', sender.email, receiver.email, marketing.name, marketing.content)
+                Promotion.objects.create(marketing=marketing, customer=receiver)
 
             return redirect('mail:index')
     else:
