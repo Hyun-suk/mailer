@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from .models import Promotion, Customer, Settings
 from .services import Mail
-from .forms import MarketingForm, SettingsForm
+from .forms import MarketingForm, SettingsForm, AddressForm
 import os
 
 
@@ -27,13 +27,16 @@ class CustomerDetailView(DetailView):
 @login_required
 def send_mail(request):
     if request.method == 'POST':
-        from_mail = request.POST['from']
         to_email = request.POST['to']
 
-        form = MarketingForm(request.POST)
-        if form.is_valid():
-            marketing = form.save(commit=False)
+        marketing_form = MarketingForm(request.POST)
+        address_form = AddressForm(request.user, request.POST)
+
+        if marketing_form.is_valid() and address_form.is_valid():
+            marketing = marketing_form.save(commit=False)
             marketing.save()
+
+            from_mail = address_form.cleaned_data.get('from_mail')
 
             mail = Mail()
             mail.send_mail('google', from_mail, to_email, marketing.name, marketing.content)
@@ -43,8 +46,12 @@ def send_mail(request):
 
             return redirect('mail:index')
     else:
-        form = MarketingForm
-        return render(request, 'send_mail.html', {'form': form})
+        marketing_form = MarketingForm
+        address_form = AddressForm(request.user)
+        return render(request, 'send_mail.html', {
+            'marketing_form': marketing_form,
+            'address_form': address_form
+        })
 
 @login_required
 def settings(request):

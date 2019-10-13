@@ -6,18 +6,13 @@
     {% csrf_token %}
     <div class="form-row">
       <div class="form-group col">
-        <label for="fromEmail">From</label>
-        <input type="email" class="form-control" name="from" placeholder="Email">
-      </div>
-      <div class="form-group col">
         <label for="toEmail">To</label>
         <input type="email" class="form-control" name="to" placeholder="Email">
       </div>
     </div>
-    <div class="form-group">
-      {{form.media}}
-      {{form.as_p|safe}}
-    </div>
+    {{marketing_form.media}}
+    {% include 'includes/form.html' with form=address_form %}
+    {% include 'includes/form.html' with form=marketing_form %}
     <button type="submit" class="btn btn-secondary">Send mail</button>
   </form>
 </div>
