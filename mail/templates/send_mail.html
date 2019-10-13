@@ -4,12 +4,6 @@
 <div class="container-fluid">
   <form method='POST'>
     {% csrf_token %}
-    <div class="form-row">
-      <div class="form-group col">
-        <label for="toEmail">To</label>
-        <input type="email" class="form-control" name="to" placeholder="Email">
-      </div>
-    </div>
     {{marketing_form.media}}
     {% include 'includes/form.html' with form=address_form %}
     {% include 'includes/form.html' with form=marketing_form %}
