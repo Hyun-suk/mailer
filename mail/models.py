@@ -34,6 +34,9 @@ class Promotion(models.Model):
     sent_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ['-sent_at',]
+
     def __str__(self):
         return '{0} {1}'.format(self.marketing, self.customer)
 
