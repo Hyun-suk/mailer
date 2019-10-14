@@ -36,12 +36,15 @@ def send_mail(request):
 
             sender = address_form.cleaned_data.get('from_mail')
             receivers = address_form.cleaned_data.get('to_mail')
+            smtp_key = request.user.settings.get(email=sender).smtp_key
 
-            mail = Mail()
+            mail = Mail(sender, smtp_key)
 
             for receiver in receivers:
-                mail.send_mail('google', sender.email, receiver.email, marketing.name, marketing.content)
+                mail.send_mail(sender.email, receiver.email, marketing.name, marketing.content)
                 Promotion.objects.create(marketing=marketing, customer=receiver)
+
+            del mail
 
             return redirect('mail:index')
     else:
